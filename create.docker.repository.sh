@@ -59,7 +59,11 @@ function is_repository_exists(){
 function get_repository_policy_from_secretsmanager(){
   echo -n "getting ecr repository policy from aws secrets manager..."
   aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:eu-west-1:974360507615:secret:github-actions-smUP23  | jq -r ".SecretString" | jq -r ".ECR_REPOSITORY_POLICY" | jq -r > policy.json
-  echo "done"
+  if [ $? != 0 ] ; then
+    echo "failed"
+  else
+    echo "done"
+  fi
 }
 
 login_to_ecr $account_id
