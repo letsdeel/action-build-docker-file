@@ -14,7 +14,7 @@ function login_to_ecr() {
   else
     echo "done"
   fi
-  aws ecr describe-registry
+  aws ecr list-images --repository-name accounting
 }
 
 function create_repository(){
