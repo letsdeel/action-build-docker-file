@@ -17,9 +17,10 @@ function login_to_ecr() {
 }
 
 function create_repository(){
-  local rep=$1
+  local accountid=$1
+  local rep=$2
   echo -n "creating a repo ($rep)..."
-  aws ecr create-repository --repository-name $rep > /dev/null 2>&1
+  aws ecr create-repository --repository-name $rep --registry-id > /dev/null 2>&1
   if [ $? != 0 ] ; then
     echo "failed"
     exit -1
@@ -29,10 +30,11 @@ function create_repository(){
 }
 
 function set_repository_policy(){
-  local rep=$1
-  local p=$2
+  local account=$1
+  local rep=$2
+  local p=$3
   echo -n "setting repository permissions policy..."
-  aws ecr set-repository-policy --repository-name $rep --policy-text file://policy.json > /dev/null 2>&1
+  aws ecr set-repository-policy --repository-name $rep --registry-id $account --policy-text file://policy.json > /dev/null 2>&1
   if [ $? != 0 ] ; then
     echo "failed"
     exit -1
@@ -46,12 +48,12 @@ function is_repository_exists(){
   local rep=$2
   local pol=$3
   echo -n "checking whether repository exists..."
-  aws ecr describe-repositories --repository-names $rep > /dev/null 2>&1
+  aws ecr describe-repositories --repository-names $rep --registry-id $accid > /dev/null 2>&1
   if [ $? == 0 ] ; then
     echo "exists"
   else
     echo "no. creating"
-    create_repository $rep
+    create_repository $accid $rep
   fi
   set_repository_policy $rep $pol
 }
