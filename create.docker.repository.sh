@@ -20,7 +20,7 @@ function create_repository(){
   local accountid=$1
   local rep=$2
   echo -n "creating a repo ($rep)..."
-  aws ecr create-repository --repository-name $rep --registry-id $accountid > /dev/null 2>&1
+  aws ecr create-repository --repository-name $rep --registry-id $accountid
   if [ $? != 0 ] ; then
     echo "failed"
     exit -1
@@ -46,7 +46,6 @@ function set_repository_policy(){
 function is_repository_exists(){
   local accid=$1
   local rep=$2
-  local pol=$3
   echo -n "checking whether repository exists..."
   aws ecr describe-repositories --repository-names $rep --registry-id $accid > /dev/null 2>&1
   if [ $? == 0 ] ; then
