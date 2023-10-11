@@ -21,5 +21,15 @@ runs:
   steps:
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
+    - name: Install aws-cli
+      id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@v1
+      with:
+        version: 2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::221581667315:role/github-action-role
+        aws-region: eu-west-1
     - run: create.docker.repository.sh ${{ inputs.account-id }} ${{ inputs.service-name }}
       shell: bash
