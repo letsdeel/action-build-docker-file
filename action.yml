@@ -1,5 +1,5 @@
-name: 'bump node version'
-description: 'this action will bump version of npm based library/package. it will work against the aws codeartifact registry and not against the package.json'
+name: 'build docker file'
+description: 'this action will create a docker repository in ecr and set policy'
 inputs:
   aws-role-arn:
     description: 'AWS Role ARN'
@@ -7,6 +7,18 @@ inputs:
   codeartifact-auth-token:
     description: 'CodeArtifact Authentication Token'
     required: true
+  service-name:
+    description: 'the name of the service. mostly should be the name of the repo'
+    required: false
+    default: ${{ github.event.repository.name }}
+  account_id:
+    description: 'the account number of aws'
+    required: false
+    default: '974360507615'
+  repository_name:
+    description: 'name of the ecr repository. preferable: github repository name and service name'
+    required: true
+    default: ${{ github.event.repository.name }}
 outputs:
   random-number:
     description: "Random number"
@@ -16,8 +28,5 @@ runs:
   steps:
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
-    - run: bump.version.sh
+    - run: create.docker.repository.sh ${{ inputs.account_id }} ${{ inputs.repository_name }}
       shell: bash
-      env: # Pass the inputs to the environment variables so that the script can access them
-        AWS_ROLE_ARN: ${{ inputs.aws-role-arn }}
-        CODEARTIFACT_AUTH_TOKEN: ${{ inputs.codeartifact-auth-token }}
