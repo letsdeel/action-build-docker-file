@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # script to create docker repository
 
 account_id=$1
