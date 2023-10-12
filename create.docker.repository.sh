@@ -14,7 +14,7 @@ function login_to_ecr() {
   else
     echo "done"
   fi
-  aws ecr list-images --repository-name accounting --registry-id $accid
+  # aws ecr list-images --repository-name accounting --registry-id $accid
 }
 
 function create_repository(){
