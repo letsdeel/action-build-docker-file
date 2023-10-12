@@ -48,7 +48,7 @@ function is_repository_exists(){
   local accid=$1
   local rep=$2
   echo -n "checking whether repository exists..."
-  aws ecr describe-repositories --repository-names accounting --registry-id $accid
+  aws ecr describe-repositories --repository-names $rep --registry-id $accid
   if [ $? == 0 ] ; then
     echo "exists"
   else
