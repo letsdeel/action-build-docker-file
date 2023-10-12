@@ -55,7 +55,7 @@ function is_repository_exists(){
     echo "no. creating"
     create_repository $accid $rep
   fi
-  set_repository_policy $rep $pol
+  set_repository_policy $accid $rep $pol
 }
 
 function get_repository_policy_from_secretsmanager(){
