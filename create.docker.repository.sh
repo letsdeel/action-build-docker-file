@@ -68,6 +68,7 @@ function get_repository_policy_from_secretsmanager(){
   fi
 }
 
+aws sts get-caller-identity
 login_to_ecr $account_id
 get_repository_policy_from_secretsmanager
 is_repository_exists $account_id $repository_name
