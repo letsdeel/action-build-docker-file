@@ -68,7 +68,9 @@ function get_repository_policy_from_secretsmanager(){
   fi
 }
 
+aws ecr describe-registry 
 login_to_ecr $account_id
+aws ecr describe-registry 
 get_repository_policy_from_secretsmanager
 is_repository_exists $account_id $repository_name
 
