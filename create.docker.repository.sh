@@ -48,7 +48,7 @@ function is_repository_exists(){
   local accid=$1
   local rep=$2
   echo -n "checking whether repository exists..."
-  aws ecr describe-repositories
+  aws ecr describe-repositories --registry-id $accid
   if [ $? == 0 ] ; then
     echo "exists"
   else
@@ -68,9 +68,7 @@ function get_repository_policy_from_secretsmanager(){
   fi
 }
 
-aws sts get-caller-identity
 login_to_ecr $account_id
-aws sts get-caller-identity
 get_repository_policy_from_secretsmanager
 is_repository_exists $account_id $repository_name
 
