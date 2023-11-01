@@ -21,7 +21,8 @@ function create_repository(){
   local accountid=$1
   local rep=$2
   echo -n "creating a repo ($rep)..."
-  aws ecr create-repository --repository-name $rep --registry-id $accountid
+  # aws ecr create-repository --repository-name $rep --registry-id $accountid
+  aws ece describe-registry
   if [ $? != 0 ] ; then
     echo "failed"
     exit -1
