@@ -29,7 +29,7 @@ runs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: arn:aws:iam::974360507615:role/github-action
+        role-to-assume: arn:aws:iam::221581667315:role/github-action-role
         aws-region: eu-west-1
     - run: create.docker.repository.sh ${{ inputs.account-id }} ${{ inputs.service-name }}
       shell: bash
