@@ -22,7 +22,6 @@ function create_repository(){
   local rep=$2
   echo -n "creating a repo ($rep)..."
   aws ecr create-repository --repository-name $rep --registry-id $accountid --region eu-west-1
-  # aws ece describe-registry
   if [ $? != 0 ] ; then
     echo "failed"
     exit -1
@@ -49,7 +48,7 @@ function is_repository_exists(){
   local accid=$1
   local rep=$2
   echo -n "checking whether repository exists..."
-  aws ecr describe-repositories --registry-id $accid
+  aws ecr describe-repositories --registry-id $accid --region eu-west-1
   if [ $? == 0 ] ; then
     echo "exists"
   else
@@ -69,9 +68,7 @@ function get_repository_policy_from_secretsmanager(){
   fi
 }
 
-aws ecr describe-registry 
 login_to_ecr $account_id
-aws ecr describe-registry 
 get_repository_policy_from_secretsmanager
 is_repository_exists $account_id $repository_name
 
