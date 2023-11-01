@@ -9,7 +9,7 @@ inputs:
     required: false
     default: ${{ github.event.repository.name }}
   account-id:
-    description: 'the account number of aws'
+    description: 'the account id of aws'
     required: false
     default: '974360507615'
 outputs:
@@ -29,7 +29,7 @@ runs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: arn:aws:iam::221581667315:role/github-action-role
+        role-to-assume: arn:aws:iam::974360507615:role/github-action
         aws-region: eu-west-1
     - run: create.docker.repository.sh ${{ inputs.account-id }} ${{ inputs.service-name }}
       shell: bash
