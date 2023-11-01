@@ -40,7 +40,7 @@ function set_repository_policy(){
   local rep=$2
   local p=$3
   echo -n "setting repository permissions policy..."
-  aws ecr set-repository-policy --repository-name $rep --registry-id $account --policy-text file://policy.json > /dev/null 2>&1
+  aws ecr set-repository-policy --repository-name $rep --registry-id $account --policy-text file://policy.json #> /dev/null 2>&1
   if [ $? != 0 ] ; then
     echo "failed"
     exit -1
