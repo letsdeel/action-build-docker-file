@@ -21,10 +21,15 @@ function create_repository(){
   local accountid=$1
   local rep=$2
   echo -n "creating a repo ($rep)..."
-  aws ecr create-repository --repository-name $rep --registry-id $accountid --region eu-west-1
+  aws ecr create-repository --repository-name $rep --registry-id $accountid --region eu-west-1 > output 2>&1
   if [ $? != 0 ] ; then
-    echo "failed"
-    exit -1
+    echo "cannot create repository $rep"
+    grep "An error occurred (RepositoryAlreadyExistsException) when calling the CreateRepository operation: The repository with name '$rep' already exists in the registry with id '$accountid'" output
+    if [ $? == 0 ] ; then
+      echo "cool! repository already exists"
+    else
+      exit -1
+    fi
   else
     echo "done"
   fi
@@ -44,19 +49,19 @@ function set_repository_policy(){
   fi
 }
 
-function is_repository_exists(){
-  local accid=$1
-  local rep=$2
-  echo -n "checking whether repository exists..."
-  aws ecr describe-repositories --registry-id $accid --region eu-west-1
-  if [ $? == 0 ] ; then
-    echo "exists"
-  else
-    echo "no. creating"
-    create_repository $accid $rep
-  fi
-  set_repository_policy $accid $rep $pol
-}
+# function is_repository_exists(){
+#   local accid=$1
+#   local rep=$2
+#   echo -n "checking whether repository exists..."
+#   aws ecr describe-repositories --registry-id $accid --region eu-west-1
+#   if [ $? == 0 ] ; then
+#     echo "exists"
+#   else
+#     echo "no. creating"
+#     create_repository $accid $rep
+#   fi
+#   set_repository_policy $accid $rep $pol
+# }
 
 function get_repository_policy_from_secretsmanager(){
   echo -n "getting ecr repository policy from aws secrets manager..."
@@ -71,5 +76,7 @@ function get_repository_policy_from_secretsmanager(){
 aws sts get-caller-identity
 login_to_ecr $account_id
 get_repository_policy_from_secretsmanager
-is_repository_exists $account_id $repository_name
+create_repository $accid $rep
+set_repository_policy $accid $rep $pol
+# is_repository_exists $account_id $repository_name
 
