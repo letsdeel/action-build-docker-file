@@ -27,7 +27,7 @@ runs:
       with:
         version: 2
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::221581667315:role/github-action-role
         aws-region: eu-west-1
